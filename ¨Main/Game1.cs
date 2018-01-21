@@ -20,7 +20,6 @@ namespace _Main
         Player player;
         Texture2D playerSprite;
 
-
         //variabler
         Vector2 menucurser, playerposistion;
         int menuposistion;
@@ -49,8 +48,8 @@ namespace _Main
             game = GameState.manu;
 
             //inistierar variabler/objects
-
-            player = new Player(playerposistion, Content.Load<Texture2D>("Player"));
+            playerposistion = new Vector2(500,500);
+            player = new Player(playerposistion, Content.Load<Texture2D>("Player"),Content.Load<Texture2D>("cros"));
             menucurser = new Vector2(350, 250);
             menuposistion = 1;
 
@@ -178,7 +177,9 @@ namespace _Main
             spriteBatch.Begin();
             if(game == GameState.manu)
             {
+
                 GraphicsDevice.Clear(Color.CornflowerBlue);
+
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.White);
                 //manue game-draw
                 spriteBatch.DrawString(font, "Manu game", new Vector2(400, 200), Color.White);
