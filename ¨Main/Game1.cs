@@ -12,13 +12,17 @@ namespace _Main
         //enum
         enum GameState {manu, ingame, pause, gameover, setting};
 
+        //objects
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-
         GameState game;
+        Player player;
+        Texture2D playerSprite;
 
-        Vector2 menucurser;
+
+        //variabler
+        Vector2 menucurser, playerposistion;
         int menuposistion;
         double countdown;
 
@@ -27,6 +31,7 @@ namespace _Main
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            //format
             graphics.PreferredBackBufferHeight = 700;
             graphics.PreferredBackBufferWidth = 1240;
         }
@@ -40,8 +45,12 @@ namespace _Main
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //setting gamestate
             game = GameState.manu;
 
+            //inistierar variabler/objects
+
+            player = new Player(playerposistion, Content.Load<Texture2D>("Player"));
             menucurser = new Vector2(350, 250);
             menuposistion = 1;
 
@@ -81,23 +90,30 @@ namespace _Main
 
 
             //menu-menu
+            //countdown 
             countdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            //upptaterar menyn saktare
             while (countdown <= 0 && game == GameState.manu)
             {
-                if (game == GameState.manu)
-                {
+                    //meny händelser
+                    //meny-ingame
                     if (Keyboard.GetState().IsKeyDown(Keys.Enter) && menuposistion == 1)
                     {
                         game = GameState.ingame;
                     }
+                    //menu-setting
                     else if (Keyboard.GetState().IsKeyDown(Keys.Enter) && menuposistion == 2)
                     {
                         game = GameState.setting;
                     }
+                    //exit
                     else if (Keyboard.GetState().IsKeyDown(Keys.Enter) && menuposistion == 3)
                     {
                         Exit();
                     }
+                    // navigation för mus
+                    //ner
                     else if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
                         if (menuposistion != 3)
@@ -107,6 +123,7 @@ namespace _Main
                         }
                         
                     }
+                    //upp
                     else if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
                         if (menuposistion != 1)
@@ -117,10 +134,10 @@ namespace _Main
                         
                     }
 
-                }
+                
                 countdown = 100;
             }
-
+            //setting
             if (game == GameState.setting)
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -128,8 +145,13 @@ namespace _Main
                     game = GameState.manu;
                 }
             }
+            //ingame
             if (game == GameState.ingame)
             {
+
+                player.Update();
+
+                //tillbacka till manu
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {
                     game = GameState.manu;
@@ -173,6 +195,7 @@ namespace _Main
             {
                 GraphicsDevice.Clear(Color.Gray);
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.Black);
+                player.Draw(spriteBatch);
             }
             else
             {
