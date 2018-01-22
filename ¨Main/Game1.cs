@@ -17,6 +17,7 @@ namespace _Main
         SpriteBatch spriteBatch;
         SpriteFont font;
         GameState game;
+        @object obj;
         Player player;
         Texture2D playerSprite;
 
@@ -50,6 +51,7 @@ namespace _Main
             //inistierar variabler/objects
             playerposistion = new Vector2(500,500);
             player = new Player(playerposistion, Content.Load<Texture2D>("Player"),Content.Load<Texture2D>("cros"));
+            obj = new @object(Content.Load<Texture2D>("obj"), new Vector2(50, 50));
             menucurser = new Vector2(350, 250);
             menuposistion = 1;
 
@@ -147,9 +149,14 @@ namespace _Main
             //ingame
             if (game == GameState.ingame)
             {
+                if (obj.hitBox.Intersects(player.body))
+                {
+                    player.posistion = player.oldposistion;
+                }
 
+                obj.Update();
                 player.Update();
-
+                
                 //tillbacka till manu
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {
@@ -197,6 +204,7 @@ namespace _Main
                 GraphicsDevice.Clear(Color.Gray);
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.Black);
                 player.Draw(spriteBatch);
+                obj.Draw(spriteBatch);
             }
             else
             {

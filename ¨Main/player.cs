@@ -7,10 +7,12 @@ namespace _Main
 {
     class Player
     {
-        Vector2 posistion, velocity, direction, posistionOrgin;
-        Rectangle body,crossairbody;
+        public Vector2 posistion, oldposistion, velocity;
+        Vector2  direction, posistionOrgin;
+        public Rectangle body,crossairbody;
         Texture2D sprite, crossair;
         float rotation;
+        int countdown;
 
         public Player(Vector2 beginposistion, Texture2D playerSprite, Texture2D crossair)
         {
@@ -21,6 +23,12 @@ namespace _Main
 
         public void Update()
         {
+            //sätter old posistion med countdown
+            if (countdown >= 50)
+            {
+                oldposistion = new Vector2(200,200);
+            }
+            
             //sätter body
             body = new Rectangle((int)posistion.X, (int)posistion.Y, sprite.Width, sprite.Height);
             posistionOrgin = new Vector2(body.Width / 2, body.Height / 2);
@@ -57,6 +65,8 @@ namespace _Main
             //movements
             posistion += velocity;
             velocity *= (float)0.95;
+
+            countdown++;
 
         }
         //mållar ut body
