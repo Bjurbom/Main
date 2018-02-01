@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _Main
 {
-    public class Camra
+    class Camra
     {
         Vector2 position;
         Matrix viewMatrix;
