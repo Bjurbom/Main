@@ -17,9 +17,10 @@ namespace _Main
         SpriteBatch spriteBatch;
         SpriteFont font;
         GameState game;
-        @object obj;
+    
         Player player;
         Texture2D playerSprite;
+        Camra camra;
 
         //variabler
         Vector2 menucurser, playerposistion;
@@ -51,8 +52,9 @@ namespace _Main
             //inistierar variabler/objects
             playerposistion = new Vector2(500,500);
             player = new Player(playerposistion, Content.Load<Texture2D>("Player"),Content.Load<Texture2D>("cros"));
-            obj = new @object(Content.Load<Texture2D>("obj"), new Vector2(50, 50));
+     
             menucurser = new Vector2(350, 250);
+            camra = new Camra();
             menuposistion = 1;
 
             base.Initialize();
@@ -149,13 +151,11 @@ namespace _Main
             //ingame
             if (game == GameState.ingame)
             {
-                if (obj.hitBox.Intersects(player.body))
-                {
-                    player.posistion = player.oldposistion;
-                }
 
-                obj.Update();
+
+     
                 player.Update();
+                camra.Update(player.posistion);
                 
                 //tillbacka till manu
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -181,10 +181,10 @@ namespace _Main
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin();
+            
             if(game == GameState.manu)
             {
-
+                spriteBatch.Begin();
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.White);
@@ -198,16 +198,20 @@ namespace _Main
                 spriteBatch.DrawString(font, "Exit", new Vector2(400, 350), Color.White);
                 //curser-draw
                 spriteBatch.DrawString(font, ">", menucurser, Color.White);
+                spriteBatch.End();
             }
-            else if(game == GameState.ingame)
+            
+            else if (game == GameState.ingame)
             {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camra.ViewMatrix);
                 GraphicsDevice.Clear(Color.Gray);
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.Black);
                 player.Draw(spriteBatch);
-                obj.Draw(spriteBatch);
+
             }
             else
             {
+                spriteBatch.Begin();
                 GraphicsDevice.Clear(Color.Yellow);
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.Black);
             }
