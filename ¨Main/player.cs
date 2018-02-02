@@ -35,6 +35,7 @@ namespace _Main
 
             //sätter up crossair
             crossairbody = new Rectangle(Mouse.GetState().X -25, Mouse.GetState().Y - 25, 50, 50);
+            
 
             //roation för player
             direction = Mouse.GetState().Position.ToVector2() - posistion;
@@ -45,6 +46,7 @@ namespace _Main
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 velocity.Y--;
+                
             }
             //Down
             if (Keyboard.GetState().IsKeyDown(Keys.S))
@@ -64,6 +66,7 @@ namespace _Main
 
             //movements
             posistion += velocity;
+            
             velocity *= (float)0.95;
 
             countdown++;

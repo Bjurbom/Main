@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
 namespace _Main
 {
@@ -17,9 +19,11 @@ namespace _Main
         SpriteBatch spriteBatch;
         SpriteFont font;
         GameState game;
-    
+        List<Shoot> shoot;
+        
+
         Player player;
-        Texture2D playerSprite;
+        Texture2D playerC;
         Camra camra;
 
         //variabler
@@ -33,8 +37,7 @@ namespace _Main
             Content.RootDirectory = "Content";
 
             //format
-            graphics.PreferredBackBufferHeight = 700;
-            graphics.PreferredBackBufferWidth = 1240;
+            
         }
 
         /// <summary>
@@ -47,11 +50,22 @@ namespace _Main
         {
             // TODO: Add your initialization logic here
             //setting gamestate
+            
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
+            
+
+            //shoot
+            shoot = new List<Shoot>();
+
             game = GameState.manu;
 
+            playerC = Content.Load<Texture2D>("cros");
             //inistierar variabler/objects
             playerposistion = new Vector2(500,500);
-            player = new Player(playerposistion, Content.Load<Texture2D>("Player"),Content.Load<Texture2D>("cros"));
+            player = new Player(playerposistion, Content.Load<Texture2D>("Player"),playerC);
      
             menucurser = new Vector2(350, 250);
             camra = new Camra();
@@ -69,6 +83,7 @@ namespace _Main
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Text");
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -156,6 +171,14 @@ namespace _Main
      
                 player.Update();
                 camra.Update(player.posistion);
+                if (Keyboard.GetState().IsKeyDown(Keys.T))
+                {
+                    shoot.Add(new Shoot(player.posistion, Mouse.GetState().Position.ToVector2(),playerC));
+                }
+                foreach (Shoot shoot in shoot.ToArray())
+                {
+                    shoot.Update();
+                }
                 
                 //tillbacka till manu
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -164,6 +187,7 @@ namespace _Main
                 }
             }
             
+
 
 
             // TODO: Add your update logic here
@@ -207,6 +231,10 @@ namespace _Main
                 GraphicsDevice.Clear(Color.Gray);
                 spriteBatch.DrawString(font, game.ToString(), new Vector2(0, 0), Color.Black);
                 player.Draw(spriteBatch);
+                foreach (Shoot shoot in shoot.ToArray())
+                {
+                    shoot.Draw(spriteBatch);
+                }
 
             }
             else

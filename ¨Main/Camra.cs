@@ -23,12 +23,12 @@ namespace _Main
 
         public int ScreenWidth
         {
-            get { return 1240; }
+            get { return 1980; }
         }
 
         public int ScreenHeight
         {
-            get { return 700; }
+            get { return 1080; }
         }
 
         public void Update(Vector2 playerPosistion)
@@ -37,7 +37,7 @@ namespace _Main
             position.X = playerPosistion.X - (ScreenWidth / 2);
             position.Y = playerPosistion.Y - (ScreenHeight / 2);
 
-            // där magi
+            // där magi händer
             viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
         }
     }
