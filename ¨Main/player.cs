@@ -7,7 +7,7 @@ namespace _Main
 {
     class Player
     {
-        public Vector2 posistion, oldposistion, velocity;
+        public Vector2 posistion, cposistion, velocity, oldposition;
         Vector2  direction, posistionOrgin;
         public Rectangle body,crossairbody;
         Texture2D sprite, crossair;
@@ -19,26 +19,32 @@ namespace _Main
             posistion = beginposistion;
             sprite = playerSprite;
             this.crossair = crossair;
+            
+           
         }
 
         public void Update()
         {
             //sätter old posistion med countdown
-            if (countdown >= 50)
-            {
-                oldposistion = new Vector2(200,200);
-            }
+            //Mouse.SetPosition(GraphicsDeviceManager.DefaultBackBufferWidth,GraphicsDeviceManager.DefaultBackBufferHeight);
+
+            Vector2 deltaposition = Mouse.GetState().Position.ToVector2() - oldposition;
+
+            cposistion += deltaposition;
+
+            Mouse.SetPosition(500,500);
             
             //sätter body
             body = new Rectangle((int)posistion.X, (int)posistion.Y, sprite.Width, sprite.Height);
             posistionOrgin = new Vector2(body.Width / 2, body.Height / 2);
 
             //sätter up crossair
-            crossairbody = new Rectangle(Mouse.GetState().X -25, Mouse.GetState().Y - 25, 50, 50);
             
+            crossairbody = new Rectangle((int)cposistion.X - 25, (int)cposistion.Y - 25, 50, 50);
+
 
             //roation för player
-            direction = Mouse.GetState().Position.ToVector2() - posistion;
+            direction = cposistion - posistion;
             rotation = (float)Math.Atan2(direction.Y, direction.X);
             rotation += (float)Math.PI * 0.5f;
 
@@ -70,6 +76,7 @@ namespace _Main
             velocity *= (float)0.95;
 
             countdown++;
+            oldposition = Mouse.GetState().Position.ToVector2();
 
         }
         //mållar ut body

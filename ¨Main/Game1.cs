@@ -55,8 +55,8 @@ namespace _Main
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.IsFullScreen = true;
             graphics.ApplyChanges();
-            
 
+            IsMouseVisible = true;
             //shoot
             shoot = new List<Shoot>();
 
@@ -173,7 +173,7 @@ namespace _Main
                 camra.Update(player.posistion);
                 if (Keyboard.GetState().IsKeyDown(Keys.T))
                 {
-                    shoot.Add(new Shoot(player.posistion, Mouse.GetState().Position.ToVector2(),playerC));
+                    shoot.Add(new Shoot(player.posistion,player.cposistion,playerC));
                 }
                 foreach (Shoot shoot in shoot.ToArray())
                 {
