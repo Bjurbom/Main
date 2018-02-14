@@ -7,7 +7,7 @@ namespace _Main
 {
     class Player
     {
-        public Vector2 posistion, cposistion, velocity, oldposition;
+        public Vector2 posistion, cposistion, velocity, oldposition, cvelocity;
         Vector2  direction, posistionOrgin;
         public Rectangle body,crossairbody;
         Texture2D sprite, crossair;
@@ -32,7 +32,7 @@ namespace _Main
 
             cposistion += deltaposition;
 
-            Mouse.SetPosition(500,500);
+            Mouse.SetPosition(100, 100);
             
             //sätter body
             body = new Rectangle((int)posistion.X, (int)posistion.Y, sprite.Width, sprite.Height);
@@ -71,9 +71,14 @@ namespace _Main
             }
 
             //movements
+            cvelocity = velocity;
+
             posistion += velocity;
-            
+            cposistion += cvelocity;
+
             velocity *= (float)0.95;
+
+            cvelocity = new Vector2(0, 0);
 
             countdown++;
             oldposition = Mouse.GetState().Position.ToVector2();

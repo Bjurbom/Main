@@ -119,6 +119,7 @@ namespace _Main
                     if (Keyboard.GetState().IsKeyDown(Keys.Enter) && menuposistion == 1)
                     {
                         game = GameState.ingame;
+                    IsMouseVisible = false;
                     }
                     //menu-setting
                     else if (Keyboard.GetState().IsKeyDown(Keys.Enter) && menuposistion == 2)
