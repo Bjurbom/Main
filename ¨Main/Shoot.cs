@@ -36,7 +36,7 @@ namespace _Main
                 movment.Normalize();
             }
             
-            position += movment * (float)10;
+            position += movment * (float)100;
 
         }
         public void Draw(SpriteBatch spriteBatch)

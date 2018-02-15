@@ -169,13 +169,18 @@ namespace _Main
             {
 
 
-     
+                MouseState mouseState = Mouse.GetState();
                 player.Update();
+                //lockar musen
+               
+
                 camra.Update(player.posistion);
-                if (Keyboard.GetState().IsKeyDown(Keys.T))
+                if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    shoot.Add(new Shoot(player.posistion,player.cposistion,playerC));
+                    shoot.Add(new Shoot(player.posistion, player.cposistion, playerC));
                 }
+                    
+                
                 foreach (Shoot shoot in shoot.ToArray())
                 {
                     shoot.Update();

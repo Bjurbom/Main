@@ -19,21 +19,42 @@ namespace _Main
             posistion = beginposistion;
             sprite = playerSprite;
             this.crossair = crossair;
-            
-           
         }
 
         public void Update()
         {
             //sätter old posistion med countdown
             //Mouse.SetPosition(GraphicsDeviceManager.DefaultBackBufferWidth,GraphicsDeviceManager.DefaultBackBufferHeight);
-
+            //fixar mussen
             Vector2 deltaposition = Mouse.GetState().Position.ToVector2() - oldposition;
+            Vector2 distance = posistion - cposistion;
+
+            // fixar så crosairen håller sig när spelaren
+            if (distance.Y <= -300)
+            {
+                cposistion.Y = posistion.Y + 300;
+            }
+            if (distance.Y >= 300)
+            {
+                cposistion.Y = posistion.Y + -300;
+            }
+            if (distance.X >= 300)
+            {
+                cposistion.X = posistion.X + -300;
+            }
+            if (distance.X <= -300)
+            {
+                cposistion.X = posistion.X + 300;
+            }
+
 
             cposistion += deltaposition;
+            if (countdown >= 5)
+            {
+                Mouse.SetPosition(1980 / 2, 1080 / 2);
+                countdown = 0;
+            }
 
-            Mouse.SetPosition(100, 100);
-            
             //sätter body
             body = new Rectangle((int)posistion.X, (int)posistion.Y, sprite.Width, sprite.Height);
             posistionOrgin = new Vector2(body.Width / 2, body.Height / 2);
@@ -81,6 +102,7 @@ namespace _Main
             cvelocity = new Vector2(0, 0);
 
             countdown++;
+           
             oldposition = Mouse.GetState().Position.ToVector2();
 
         }
